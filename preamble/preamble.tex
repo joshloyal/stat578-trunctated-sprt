@@ -1,0 +1,50 @@
+\usepackage{amsthm,amsmath,amssymb,bbm,bm}
+\usepackage{mathtools}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage{titling}
+\usepackage{relsize}
+\usepackage{rotating}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            anchorcolor=blue,
+            citecolor=blue,
+            urlcolor=blue]{hyperref}
+
+\usepackage[a4paper,
+ %total={170mm,257mm},
+ left=28mm,
+ top=30mm]{geometry}
+
+\renewcommand{\baselinestretch}{1.1}
+{\textwidth=6in}
+
+\usepackage{chngcntr}
+
+\counterwithin{equation}{section}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}{Lemma}
+\counterwithin{thm}{section}
+\newtheorem{rmk}{Remark}[thm]
+\counterwithin{rmk}{section}
+\newtheorem{assump}{Assumption}
+\renewcommand\theassump{A\arabic{assump}}
+
+
+\def\bal#1\eal{\begin{align}#1\end{align}}
+\def\balnn#1\ealnn{\begin{align*}#1\end{align*}}
