@@ -59,7 +59,7 @@ B &= \frac{1 - \beta_{SPRT}}{\alpha_{SPRT}}. \\
 Assuming that we can approximate the CDF of $\Lambda_n(\theta_1, \theta_0)$ with a normal (true for the exponential family), we can set the truncation level $M$ and FSS threshold $\tau$ to control the FSS error probabilities:
 \begin{equation}
 \begin{split}
-M &= \frac{\sigma_{\theta_1}^2}{(\mu_{\theta_1} - \mu_{\theta_0})^2} \left(z_{\beta_{FSS}} + \frac{\sigma_{\theta_0}}{\sigma_{\theta_1}}z_{\alpha_{FSS}}\right)^2 \\
+M &= \frac{\sigma_{\theta_0}^2 \sigma_{\theta_1}^2}{(\mu_{\theta_1} - \mu_{\theta_0})^2} \left(\frac{1}{\sigma_{\theta_0}} z_{\beta_{FSS}} + \frac{1}{\sigma_{\theta_1}}z_{\alpha_{FSS}}\right)^2 \\
 \tau &= \frac{\sqrt{M}}{\mu_{\theta_1} - \mu_{\theta_0}} \left(\mu_{\theta_1} \sigma_{\theta_0} z_{\alpha_{FSS}} + \mu_{\theta_0} \sigma_{\theta_1} z_{\beta_{FSS}}\right)
 \end{split}
 \end{equation}
