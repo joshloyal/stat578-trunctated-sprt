@@ -41,11 +41,13 @@
 
 % indicator function
 \def\mOne{{\mathbbm{1}}}
-\newcommand{\ind}[1]{\mOne_{\{#1\}}}
-\newcommand{\indc}[1]{\mOne_{\{#1\}^c}}
+\newcommand{\ind}[1]{\mOne\\{\{#1\}\\}}
+\newcommand{\indc}[1]{\mOne\\{\{#1\\\}^c}}
 
 % linear algebra
 \newcommand{\Reals}[1]{\mathbb{R}^{#1}}
 
 % dataset
 \newcommand{\dataset}{\mathcal{D}_n}
+
+\newcommand{\iidsim}{\overset{\text{iid}}\sim}
