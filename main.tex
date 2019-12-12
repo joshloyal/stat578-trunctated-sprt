@@ -37,11 +37,11 @@ D_{SPRT} =
 \end{equation}
 Wald showed that this sequential procedure has a significantly lower expected sample size than the FSS test at $\theta \geq \theta_1$ and $\theta \leq \theta_0$ (in fact it is optimal at $\theta_0$ and $\theta_1$). A downside of the SPRT is that the ESS can be much larger than the FSS test in the indifference region $(\theta_0, \theta_1)$. Furthermore, this bad performance can be particularly egregious for the small error probabilities employed in practice.
 
-This report explores the Truncated SPRT proposed by \citet{tantara1977} and \citet{tantara1982}, which alleviates the poor performance of the SPRT within the indifference region. In Section \ref{sec:method} we lay out the details and design of the Truncated SPRT. An interesting component of the Truncated SPRT is the introduction of mixing weights $c_1$ and $c_2$ that control how much the test performs like the FSS test or the SPRT. In Section \ref{sec:mixing_weights}, we numerically explore the effect of these parameters as well as demonstrate how these values are chosen in practice. Finally, in Section \ref{sec:comparisons}, we compare the Truncated SPRT with other popular sequential testing procedures on data simulated from a Gaussian and Bernoulli distribution.
+This report explores the Truncated SPRT proposed by \citet{tantara1977} and \citet{tantara1982}, which alleviates the poor performance of the SPRT within the indifference region. In Section \ref{sec:trunc_sprt} we lay out the details and design of the Truncated SPRT. An interesting component of the Truncated SPRT is the introduction of mixing weights $c_1$ and $c_2$ that control how much the test performs like the FSS test or the SPRT. In Section \ref{sec:mixing_weights}, we numerically explore the effect of these parameters as well as demonstrate how these values are chosen in practice. Finally, in Section \ref{sec:comparisons}, we compare the Truncated SPRT with other popular sequential testing procedures on data simulated from a Gaussian and Bernoulli distribution.
 
 \section{Method}\label{sec:method}
 
-\subsection{The Truncated SPRT}
+\subsection{The Truncated SPRT}\label{sec:trunc_sprt}
 
 The Truncated SPRT runs a standard SPRT up until a pre-specified sample size $M$, after which it employs a fixed sample size (FSS) test to determine whether the hypothesis is rejected. The truncation of the test allows one to avoid an excessively large ESS in the worst case. This procedure is illustrated in Figure \ref{fig:trunc_sprt}.  Formally, the Truncated SPRT has a stopping time
 \begin{equation}
@@ -97,11 +97,7 @@ where $\mu_{\theta} = E_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$ and $\sigm
 
 \subsection{Trade-off}
 
-There is a trade-off between the performance at the truncation point $M$ and the expected sample size of the truncated test. A lower truncation point requires $\alpha_{FSS}$ and $\beta{FSS}$ to be higher and therefore $\alpha_{SPRT}$ and $\beta_{SPRT}$ to be lower. This means SPRT takes longer to terminate and the performance at $\theta_1$ (and $\theta_0$) becomes worse. But on the other hand, performance at the indifference region gets better due to a lower truncation point. This is illustrated in Figure \ref{fig:trade-off}.
-
-This trade-off can also be observed in the power function of the tests. Allowing more error to the FSS test and less error to the SPRT makes the truncated test less conservative than SPRT but for the same reason ESS gets higher at $\theta_0$ and $\theta_1$.
-
-Therefore in order to achieve the criteria for a desired test it is important to carefully tune $c_1$ and $c_2$, which is discussed in the next section.
+There is a trade-off between the performance at the truncation point $M$ and the expected sample size of the truncated test. A lower truncation point requires $\alpha_{FSS}$ and $\beta_{FSS}$ to be higher and therefore $\alpha_{SPRT}$ and $\beta_{SPRT}$ to be lower. This means SPRT takes longer to terminate and the performance at $\theta_1$ (and $\theta_0$) becomes worse. But on the other hand, performance at the indifference region gets better due to a lower truncation point. This is illustrated in Figure \ref{fig:trade-off}. This trade-off can also be observed in the power function of the tests. Allowing more error to the FSS test and less error to the SPRT makes the truncated test less conservative than SPRT but for the same reason ESS gets higher at $\theta_0$ and $\theta_1$. Therefore in order to achieve the criteria for a desired test it is important to carefully tune $c_1$ and $c_2$, which is discussed in the next section.
 
 \begin{figure}
 \centering
@@ -112,31 +108,36 @@ Therefore in order to achieve the criteria for a desired test it is important to
 \begin{subfigure}{0.49\textwidth}
     \includegraphics[width=\textwidth]{images/PowerFunction.pdf}
 \end{subfigure}
-\caption{Trade-off between Truncation Point and ESS}
+\caption{The trade-off between truncation point $M$ and the ESS of the test.}
 \label{fig:trade-off}
 \end{figure}
 
-\subsection{Choosing the Mixing Weights}
+\subsection{Choosing the Mixing Weights}\label{sec:mixing_weights}
 
-Now that we know how to design the test the question remains how to choose the mixing weights $c_1$ and $c_2$. If the truncation level is unconstrained in the experimental design, it is recommended to monitor the following quantities:
+The design of the test is complete once one chooses the mixing weights $c_1$ and $c_2$. If the truncation level is unconstrained in the experimental design, it is recommended to monitor the following quantities:
 \begin{equation}\label{eq:c_optim}
 \frac{E_{\theta_{*}}[T\,]}{M_{FSS}}, \, \frac{M}{M_{FSS}}  \, \text{ and } \, \frac{E_{\theta_0}[T\,]}{E_{\theta_0}[T_{SPRT}]}, \frac{E_{\theta_1}[T\,]}{E_{\theta_1}[T_{SPRT}]}.
 \end{equation}
-Recall that we are designing a truncated test so that we take less samples than the FSS test on average. In addition, we would like to match the optimal performance of the SPRT at $\theta_0$ and $\theta_1$. Therefore, we would like the first two quantities to be smaller than one and the last two quantities to be close to one.
+The first two quantities should be smaller than one, which indicates that the sequential test takes less samples than the FSS test on average in the worst case. The second two quantities should be close to one in order to match the optimal performance of the SPRT at $\theta_0$ and $\theta_1$. Alternatively, one may have a maximum allowable truncation point $M$ dictated by the experiment. For example, in quality control experiments this is the total number of items in the lot. In this case...
 
-We consider two different experimental designs. The first is one in which the truncation level is allowed to be unconstrained and later is in which the truncation level is set to a maximum allowable value specified by some industrial design. 
-
-%as well as how the test compares with other popular sequential tests. We answer these questions through numerical experimentation in the next section.
+We consider two different experimental designs. The first is one in which the truncation level is allowed to be unconstrained and later is in which the truncation level is set to a maximum allowable value specified by some industrial design.
 
 \section{Numerical Results}
 
-For our simulations we will consider how the test performs when the data comes from a Gaussian distribution. In particular, consider $X \iidsim N(\theta, 1)$ and we want to test $H_0 : \theta \leq -\delta$ vs. $H_1 : \theta \geq \delta$. The FSS thresholds are
+For our simulations we will consider the following two scenarios:
+
+\textit{Scenario 1 (Gaussian):} $X_1, X_2, \dots \iidsim N(\theta, 1)$ and we want to test $H_0 : \theta \leq -\delta$ vs. $H_1 : \theta \geq \delta$. Note that the FSS thresholds are
 \begin{equation}
 \begin{split}
 M &= \frac{(z_{\alpha_{FSS}} + z_{\beta_{FSS}})^2}{4 \delta^2} \\
 \tau &= \sqrt{M} \delta (z_{\alpha_{FSS}} - z_{\beta_{FSS}}).
 \end{split}
 \end{equation}
+
+\textit{Scenario 2 (Bernoulli):} $X_1, X_2, \dots, \iidsim \text{Bernoulli}(p)$ and we want to test $H_0: p = p_0$ vs. $H_1: p = p_1$.
+
+\subsection{The Effect of the Mixing Weights on the Test}
+
 
 \begin{figure}
 \centering
@@ -145,6 +146,8 @@ M &= \frac{(z_{\alpha_{FSS}} + z_{\beta_{FSS}})^2}{4 \delta^2} \\
 \end{figure}
 
 \subsection{Comparison with Other Sequential Tests}\label{sec:comparisons}
+
+For large error probabilities (0.1 or $10^{-2}$, the Truncated SPRT generally performs worse or equivalent to Lorden's 2-SPRT and the GLR test. For small error probabilities, the Truncated SPRT has uniformly lower ESS between 0.5 and $-0.5$, but has much heavy tails for large $\theta$. All tests besides the SPRT have a smaller sample size on average than the equivalent FSS test.
 
 \begin{figure}
 \centering
@@ -163,12 +166,11 @@ M &= \frac{(z_{\alpha_{FSS}} + z_{\beta_{FSS}})^2}{4 \delta^2} \\
     \includegraphics[width=\textwidth]{images/ess_alpha1e4}
 \end{subfigure}
 
-\caption{Comparison for the SPRT, Truncated SPRT, Lorden's 2-SPRT, and the GLR test when $X_i \iidsim N(\theta, 1)$, $\theta_0 = -\theta_1 = 1$, and thresholds are choosen such that the error probabilities are $\alpha = \beta = 0.1, 10^{-2}, 10^{-3}, 10^{-4}$. The mixing proportion was set to $c_1 = c_2 = 0.5$ for the Truncated SPRT. For large error probabilities (0.1 or $10^{-2}$, the Truncated SPRT generally performs worse or equivalent to Lorden's 2-SPRT and the GLR test. For small error probabilities, the Truncated SPRT has uniformly lower ESS between 0.5 and $-0.5$, but has much heavy tails for large $\theta$. All tests besides the SPRT have a smaller sample size on average than the equivalent FSS test.}
+\caption{Comparison for the SPRT, Truncated SPRT, Lorden's 2-SPRT, and the GLR test when $X_i \iidsim N(\theta, 1)$, $\theta_0 = -\theta_1 = 0.4$, and thresholds are choosen such that the error probabilities are $\alpha = \beta = 0.1, 10^{-2}, 10^{-3}, 10^{-4}$. The mixing proportion was set to $c_1 = c_2 = 0.5$ for the Truncated SPRT. }
 \end{figure}
 
 \section{Conclusion}
 
-\newpage
 \bibliographystyle{asa}
 \bibliography{reference}
 
