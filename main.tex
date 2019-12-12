@@ -4,7 +4,7 @@
 
 \begin{document}
 
-\title{  {\LARGE STAT 578 Final Project: A Truncated SPRT} }
+\title{  {\LARGE STAT 578 Final Project: The Truncated SPRT} }
 
 \author{
     Anamitra Chaudhuri \,
@@ -15,15 +15,15 @@
 \maketitle
 
 \section{Introduction}
-Consider $X_1, X_2, \dots \iidsim f_{\theta}$ where $f_{\theta}(x)$ belongs to the one-parameter exponential family, i.e. $f_{\theta}(x) = f_0(x)e^{x\theta - \psi(\theta)}$. Given $\theta_1 > \theta_0$, we want to design a sequential test $(T, D)$ for
+Consider $X_1, X_2, \dots \iidsim f_{\theta}$ where $f_{\theta}(x)$ belongs to the one-parameter exponential family, i.e. $f_{\theta}(x) = f_0(x)e^{x\theta - \psi(\theta)}$. Given $\theta_1 > \theta_0$, we want to design a test for
 \begin{equation}\label{eq:hypo_test}
 H_0: \theta \leq \theta_0 \text{ vs. } H_1: \theta \geq \theta_1
 \end{equation}
 such that the error probabilities are controlled at levels $\alpha, \beta$, i.e. $P_{\theta_0}(D = 1) \leq \alpha$ and $P_{\theta_1}(D = 0) \leq \beta$. In the fixed sample size (FSS) setting the Neyman-Pearson lemma states that the uniformly most powerful test for \ref{eq:hypo_test} that takes at most $M_{FSS}$ samples is the likelihood ratio test:
 \begin{equation}
-D_{FSS} = \ind{\sum_{i=1}^{M_{FSS}} Z_i \geq \tau}  = \ind{Z_{M_{FSS}}(\theta_1, \theta_0) \geq \tau}.
+D_{FSS} = \ind{\sum_{i=1}^{M_{FSS}} Z_i \geq \tau}  = \ind{Z_{M_{FSS}}(\theta_1, \theta_0) \geq \tau}
 \end{equation}
-where $Z_i = \log(f_{\theta_1}(X_i) / f_{\theta_0}(X_i))$. The motivation behind sequential testing is to design online tests that are allowed to take more than  $M_{FSS}$ samples with the trade-off that their expected sample size (ESS) is smaller than the FSS test satisfying the equivalent error control. In his seminal work, \citet{wald1947} proposed the SPRT with stopping time
+where $Z_i = \log(f_{\theta_1}(X_i) / f_{\theta_0}(X_i))$. When sample collection is expensive an appealing alternative is the class of sequential tests ($T, D$). Sequential tests allows us to take more than $M_{FSS}$ samples with the trade-off that the test's expected sample size (ESS) can be smaller than the equivalent FSS test. In his seminal work, \citet{wald1947} proposed the SPRT with stopping time
 \begin{equation}
 T_{SPRT} = \inf\set{n \geq 1 : Z_n(\theta_1, \theta_0) \notin (-\log(A), \log(B))}
 \end{equation}
@@ -35,13 +35,15 @@ D_{SPRT} =
 0, & Z_T(\theta_1, \theta_0) \leq -\log(A).
 \end{cases}
 \end{equation}
-Wald showed that this sequential procedure has a much lower expected sample size than the FSS test at $\theta \geq \theta_1$ and $\theta \leq \theta_0$ (in fact it is optimal at $\theta_0$ and $\theta_1$). A downside of the SPRT is that the ESS can be much larger than the FSS test in the indifference region $(\theta_0, \theta_1)$. Furthermore, this bad performance can be particularly egregious for the small error probabilities employed in practice. A solution proposed in \citet{tantara1977} and \citet{tantara1982} is to truncate the SPRT at some maximum sample size in a way that still achieves the desired error control. They call their method the Truncated SPRT.
+Wald showed that this sequential procedure has a significantly lower expected sample size than the FSS test at $\theta \geq \theta_1$ and $\theta \leq \theta_0$ (in fact it is optimal at $\theta_0$ and $\theta_1$). A downside of the SPRT is that the ESS can be much larger than the FSS test in the indifference region $(\theta_0, \theta_1)$. Furthermore, this bad performance can be particularly egregious for the small error probabilities employed in practice.
 
-In this project we start by laying out the details of the Truncated SPRT in Section \ref{sec:method}. The Truncated SPRT introduces two new parameters $c_1$ and $c_2$ that are fundamental to the performance of the test. In Section \ref{sec:mixing_weights}, we describe how these values are chosen in practice. In addition, we perform numerical experiments to suggest recommended values in the Gaussian case. Finally, in Section \ref{sec:comparisons}, we compare the Truncated SPRT with other popular sequential testing procedures on data simulated from a Gaussian and Bernoulli distribution.
+This report explores the Truncated SPRT proposed by \citet{tantara1977} and \citet{tantara1982}, which alleviates the poor performance of the SPRT within the indifference region. In Section \ref{sec:method} we lay out the details and design of the Truncated SPRT. An interesting component of the Truncated SPRT is the introduction of mixing weights $c_1$ and $c_2$ that control how much the test performs like the FSS test or the SPRT. In Section \ref{sec:mixing_weights}, we numerically explore the effect of these parameters as well as demonstrate how these values are chosen in practice. Finally, in Section \ref{sec:comparisons}, we compare the Truncated SPRT with other popular sequential testing procedures on data simulated from a Gaussian and Bernoulli distribution.
 
 \section{Method}\label{sec:method}
 
-The Truncated SPRT runs a standard SPRT up until a pre-specified sample size $M$, after which it employs a fixed sample size (FSS) test to determine whether the hypothesis is rejected. This procedure is illustrated in Figure \ref{fig:trunc_sprt}.  Formally, the Truncated SPRT has a stopping time
+\subsection{The Truncated SPRT}
+
+The Truncated SPRT runs a standard SPRT up until a pre-specified sample size $M$, after which it employs a fixed sample size (FSS) test to determine whether the hypothesis is rejected. The truncation of the test allows one to avoid an excessively large ESS in the worst case. This procedure is illustrated in Figure \ref{fig:trunc_sprt}.  Formally, the Truncated SPRT has a stopping time
 \begin{equation}
 T = T_{SPRT} \wedge M
 \end{equation}
@@ -61,7 +63,7 @@ Note that there are four parameters that must be chosen: the SPRT thresholds $A$
 \label{fig:trunc_sprt}
 \end{figure}
 
-The difficulty in designing such a test is choosing $A, B, M, \tau$ such that the error probabilities are controlled to the desired levels $\alpha$ and $\beta$. The key result that makes the experimental design possible is the following bound on the error probabilities derived in \citet{tantara1977}:
+One chooses $A, B, M, \tau$ to control the error probabilities at the desired levels $\alpha$ and $\beta$. The key result that makes the experimental design possible is the following bound on the error probabilities derived in \citet{tantara1977}:
 \begin{equation}\label{eq:design_bound}
 \begin{split}
 P_{\theta_0}(D = 1) &\leq \alpha_{SPRT} + \alpha_{FSS} \\
@@ -70,7 +72,7 @@ P_{\theta_1}(D = 0) &\leq \beta_{SPRT} + \beta_{FSS}.
 \end{equation}
 Note that this follows from a union bound between the SPRT and FSS parts of the test.
 
-The bound in Equation \ref{eq:design_bound} allows us to specify the four parameters of the test so that the error constraints are satisfied. We begin by choosing mixing weights $c_1, c_2 \in \left[0, 1\right]$ such that
+With the bound in Equation \ref{eq:design_bound}, we can describe how to choose the test's parameters. We begin by choosing mixing weights $c_1, c_2 \in \left[0, 1\right]$ such that
 \begin{equation}
 \begin{split}
 \alpha_{FSS} = c_1 \alpha, \quad &\alpha_{SPRT} = (1 - c_1) \alpha \\
@@ -93,8 +95,21 @@ M &= \frac{1}{(\mu_{\theta_1} - \mu_{\theta_0})^2} \left(\sigma_{\theta_1} z_{\b
 \end{equation}
 where $\mu_{\theta} = E_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$ and $\sigma^2_{\theta} = \text{Var}_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$. Because $\alpha_{FSS} + \alpha_{SPRT} = 1$ and $\beta_{FSS} + \beta_{SPRT} = 1$, these settings achieve the desired error control.
 
-\subsection{Gaussian Example}
-Consider $X \iidsim N(\theta, 1)$ and we want to test $H_0 : \theta \leq -\delta$ vs. $H_1 : \theta \geq \delta$. The FSS thresholds are
+\subsection{Choosing the Mixing Weights}
+
+Now that we know how to design the test the question remains how to choose the mixing weights $c_1$ and $c_2$. If the truncation level is unconstrained in the experimental design, it is recommended to monitor the following quantities:
+\begin{equation}\label{eq:c_optim}
+\frac{E_{\theta_{*}}[T\,]}{M_{FSS}}, \, \frac{M}{M_{FSS}}  \, \text{ and } \, \frac{E_{\theta_0}[T\,]}{E_{\theta_0}[T_{SPRT}]}, \frac{E_{\theta_1}[T\,]}{E_{\theta_1}[T_{SPRT}]}.
+\end{equation}
+Recall that we are designing a truncated test so that we take less samples than the FSS test on average. In addition, we would like to match the optimal performance of the SPRT at $\theta_0$ and $\theta_1$. Therefore, we would like the first two quantities to be smaller than one and the last two quantities to be close to one.
+
+We consider two different experimental designs. The first is one in which the truncation level is allowed to be unconstrained and
+
+%as well as how the test compares with other popular sequential tests. We answer these questions through numerical experimentation in the next section.
+
+\section{Numerical Results}
+
+For our simulations we will consider how the test performs when the data comes from a Gaussian distribution. In particular, consider $X \iidsim N(\theta, 1)$ and we want to test $H_0 : \theta \leq -\delta$ vs. $H_1 : \theta \geq \delta$. The FSS thresholds are
 \begin{equation}
 \begin{split}
 M &= \frac{(z_{\alpha_{FSS}} + z_{\beta_{FSS}})^2}{4 \delta^2} \\
@@ -102,14 +117,10 @@ M &= \frac{(z_{\alpha_{FSS}} + z_{\beta_{FSS}})^2}{4 \delta^2} \\
 \end{split}
 \end{equation}
 
-\section{Numerical Results}
-
-\subsection{The Choice of Mixing Weights}\label{sec:mixing_weights}
-
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{images/c1_c2_ratios}
-\caption{Effect of $c_1$ and $c_2$.}
+\caption{Effect of $c_1$ and $c_2$ on the quantities in Equation \ref{eq:c_optim} for the Gaussian example.}
 \end{figure}
 
 \subsection{Comparison with Other Sequential Tests}\label{sec:comparisons}
