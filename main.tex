@@ -93,7 +93,28 @@ M &= \frac{1}{(\mu_{\theta_1} - \mu_{\theta_0})^2} \left(\sigma_{\theta_1} z_{\b
 \tau &= \frac{\sqrt{M}}{\mu_{\theta_1} - \mu_{\theta_0}} \left(\mu_{\theta_1} \sigma_{\theta_0} z_{\alpha_{FSS}} + \mu_{\theta_0} \sigma_{\theta_1} z_{\beta_{FSS}}\right)
 \end{split}
 \end{equation}
-where $\mu_{\theta} = E_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$ and $\sigma^2_{\theta} = \text{Var}_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$. Because $\alpha_{FSS} + \alpha_{SPRT} = 1$ and $\beta_{FSS} + \beta_{SPRT} = 1$, these settings achieve the desired error control.
+where $\mu_{\theta} = E_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$ and $\sigma^2_{\theta} = \text{Var}_{\theta}\left[Z_1(\theta_1, \theta_0)\right]$. Because $\alpha_{FSS} + \alpha_{SPRT} = \alpha$ and $\beta_{FSS} + \beta_{SPRT} = \beta$, these settings achieve the desired error control.
+
+\subsection{Trade-off}
+
+There is a trade-off between the performance at the truncation point $M$ and the expected sample size of the truncated test. A lower truncation point requires $\alpha_{FSS}$ and $\beta{FSS}$ to be higher and therefore $\alpha_{SPRT}$ and $\beta_{SPRT}$ to be lower. This means SPRT takes longer to terminate and the performance at $\theta_1$ (and $\theta_0$) becomes worse. But on the other hand, performance at the indifference region gets better due to a lower truncation point. This is illustrated in Figure \ref{fig:trade-off}.
+
+This trade-off can also be observed in the power function of the tests. Allowing more error to the FSS test and less error to the SPRT makes the truncated test less conservative than SPRT but for the same reason ESS gets higher at $\theta_0$ and $\theta_1$.
+
+Therefore in order to achieve the criteria for a desired test it is important to carefully tune $c_1$ and $c_2$, which is discussed in the next section.
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{images/trade-off.pdf}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{images/PowerFunction.pdf}
+\end{subfigure}
+\caption{Trade-off between Truncation Point and ESS}
+\label{fig:trade-off}
+\end{figure}
 
 \subsection{Choosing the Mixing Weights}
 
@@ -103,7 +124,7 @@ Now that we know how to design the test the question remains how to choose the m
 \end{equation}
 Recall that we are designing a truncated test so that we take less samples than the FSS test on average. In addition, we would like to match the optimal performance of the SPRT at $\theta_0$ and $\theta_1$. Therefore, we would like the first two quantities to be smaller than one and the last two quantities to be close to one.
 
-We consider two different experimental designs. The first is one in which the truncation level is allowed to be unconstrained and
+We consider two different experimental designs. The first is one in which the truncation level is allowed to be unconstrained and later is in which the truncation level is set to a maximum allowable value specified by some industrial design. 
 
 %as well as how the test compares with other popular sequential tests. We answer these questions through numerical experimentation in the next section.
 
